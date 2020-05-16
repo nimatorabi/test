@@ -1,51 +1,47 @@
 <template>
   <div>
-    <div v-if="!isLoading">
-      <form action="#">
-        <label for="profile">نام:</label>
-        <input type="text" value="nima" v-model="info.username" />
-        <label for="profile">نام خانوادگی:</label>
-        <input type="text" value="nima" v-model="info.lname" />
-        <label for="profile">شماره تلفن:</label>
-        <input type="text" value="nima" v-model="info.phone" />
-      </form>
-      <br />
-      <a-form :form="form" @submit="handleSubmit">
-        <a-form-item
-          :label-col="formItemLayout.labelCol"
-          :wrapper-col="formItemLayout.wrapperCol"
-          label="نام"
-        >
-          <a-input
-            v-decorator="[
+    <a-spin size="large" :spinning="isLoading">
+      <div>
+        <a-form :form="form" @submit="handleSubmit">
+          <a-form-item
+            :label-col="formItemLayout.labelCol"
+            :wrapper-col="formItemLayout.wrapperCol"
+            label="نام"
+          >
+            <a-input
+              v-decorator="[
               'username',
-              { rules: [{ required: true, message: 'نام خود را وارد کنید' }] },
+              {
+                'initialValue':userInfo.fname,
+                 rules: [{ required: true, message: 'نام خود را وارد کنید' }] },
             ]"
-            placeholder="نام"
-          />
-        </a-form-item>
-        <a-form-item
-          :label-col="formItemLayout.labelCol"
-          :wrapper-col="formItemLayout.wrapperCol"
-          label="نام خانوادگی"
-        >
-          <a-input
-            v-decorator="[
+              placeholder="نام"
+            />
+          </a-form-item>
+          <a-form-item
+            :label-col="formItemLayout.labelCol"
+            :wrapper-col="formItemLayout.wrapperCol"
+            label="نام خانوادگی"
+          >
+            <a-input
+              v-decorator="[
               'lname',
               {
+                'initialValue':userInfo.lname,
                 rules: [
                   { required: true, message: 'نام خانوادگی خود را وارد کنید' },
                 ],
               },
             ]"
-            placeholder="نام خانوادگی "
-          />
-        </a-form-item>
-        <a-form-item v-bind="formItemLayout" label="ایمیل">
-          <a-input
-            v-decorator="[
+              placeholder="نام خانوادگی "
+            />
+          </a-form-item>
+          <a-form-item v-bind="formItemLayout" label="ایمیل">
+            <a-input
+              v-decorator="[
               'email',
               {
+                'initialValue':userInfo.Email,
                 rules: [
                   {
                     type: 'email',
@@ -58,13 +54,14 @@
                 ],
               },
             ]"
-          />
-        </a-form-item>
-        <a-form-item v-bind="formItemLayout" label="رمز" has-feedback>
-          <a-input
-            v-decorator="[
+            />
+          </a-form-item>
+          <a-form-item v-bind="formItemLayout" label="رمز" has-feedback>
+            <a-input
+              v-decorator="[
               'password',
               {
+                'initialValue':userInfo.pass,
                 rules: [
                   {
                     required: true,
@@ -76,14 +73,15 @@
                 ],
               },
             ]"
-            type="password"
-          />
-        </a-form-item>
-        <a-form-item v-bind="formItemLayout" label="تکرار رمز عبور" has-feedback>
-          <a-input
-            v-decorator="[
+              type="password"
+            />
+          </a-form-item>
+          <a-form-item v-bind="formItemLayout" label="تکرار رمز عبور" has-feedback>
+            <a-input
+              v-decorator="[
               'confirm',
               {
+                'initialValue':userInfo.pass,
                 rules: [
                   {
                     required: true,
@@ -95,48 +93,45 @@
                 ],
               },
             ]"
-            type="password"
-            @blur="handleConfirmBlur"
-          />
-        </a-form-item>
-        <a-form-item v-bind="formItemLayout" label="شماره تلفن">
-          <a-input
-            v-decorator="[
+              type="password"
+              @blur="handleConfirmBlur"
+            />
+          </a-form-item>
+          <a-form-item v-bind="formItemLayout" label="شماره تلفن">
+            <a-input
+              v-decorator="[
               'phone',
               {
+                'initialValue':userInfo.phone,
                 rules: [
                   { required: true, message: 'شماره تلفن خود را وارد کنید' },
                 ],    
               },
             ]"
-            style="width: 100%"
-          >
-            <a-select
-              slot="addonBefore"
-              v-decorator="['prefix', { initialValue: '98' }]"
-              style="width: 70px"
+              style="width: 100%"
             >
-              <a-select-option value="86">+98</a-select-option>
-              <a-select-option value="87">+87</a-select-option>
-            </a-select>
-          </a-input>
-        </a-form-item>
-        <a-form-item v-bind="tailFormItemLayout">
-          <a-checkbox v-decorator="['agreement', { valuePropName: 'checked' }]">
-            تایید شرایط و
-            <a href>قوانین سایت</a>
-          </a-checkbox>
-        </a-form-item>
-        <a-form-item v-bind="tailFormItemLayout">
-          <a-button type="primary" html-type="submit">ثبت نام</a-button>
-        </a-form-item>
-      </a-form>
-    </div>
-    <div v-else>
-      <a-modal v-model="modal2Visible" centered :footer="null" width="95px" :closable="false">
-        <a-spin size="large" />
-      </a-modal>
-    </div>
+              <a-select
+                slot="addonBefore"
+                v-decorator="['prefix', { initialValue: '98' }]"
+                style="width: 70px"
+              >
+                <a-select-option value="86">+98</a-select-option>
+                <a-select-option value="87">+87</a-select-option>
+              </a-select>
+            </a-input>
+          </a-form-item>
+          <a-form-item v-bind="tailFormItemLayout">
+            <a-checkbox v-decorator="['agreement', { valuePropName: 'checked' }]">
+              تایید شرایط و
+              <a href>قوانین سایت</a>
+            </a-checkbox>
+          </a-form-item>
+          <a-form-item v-bind="tailFormItemLayout">
+            <a-button type="primary" html-type="submit">ثبت نام</a-button>
+          </a-form-item>
+        </a-form>
+      </div>
+    </a-spin>
   </div>
 </template>
 
@@ -194,11 +189,12 @@ export default {
     //   });
     handleSubmit(e) {
       e.preventDefault();
+      console.log(this.userInfo);
       this.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
           console.log("Received values of form: ", values);
           this.modal2Visible = true;
-          this.$store.dispatch("LOAD_INFO", values);
+          this.$store.dispatch("post_info", values);
           setTimeout(() => {
             this.openNotificationWithIcon("success");
             //console.log("this is user info log",userinfo);
@@ -228,6 +224,9 @@ export default {
       }
       callback();
     }
+  },
+  mounted() {
+    this.$store.dispatch("LOAD_INFO");
   },
   computed: {
     ...mapGetters(["IS_LOADING"]),

@@ -16,7 +16,6 @@ export default new Vuex.Store({
     IS_LOADING: (state) => {
       console.log("before : ", state);
       return state.isLoading;
-
     }
   },
   mutations: {
@@ -31,17 +30,21 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    async LOAD_INFO({ commit }, values) {
+    async LOAD_INFO({ commit }) {
       try {
-        console.log("values", values);
-
         commit('LOADING', true);
-        let response = await axios.post('http://localhost:5000/user', values);
-        console.log("Load post : ", response.data);
+        let response = await axios.get('http://localhost:5000/user');
         commit('FETCH_INFO', response.data);
-        setTimeout(await function () {
-          commit('LOADING', false);
-        }, 3000);
+        commit('LOADING', false);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async post_info({ commit }, values) {
+      try {
+        commit('LOADING', true);
+        await axios.post('http://localhost:5000/user', values);
+        commit('LOADING', false);
       } catch (e) {
         console.log(e);
       }
